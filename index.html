@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheristore - Маркетплейс эксклюзивных имён</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(107, 138, 255, 0.1) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 36px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .notifications-btn {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .notifications-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF4444;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .balance-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.15));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .coin-icon {
+            font-size: 28px;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+        }
+
+        .connect-btn {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #6B8AFF, #8BA4FF);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(107, 138, 255, 0.3);
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(107, 138, 255, 0.5);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: fit-content;
+        }
+
+        .tab {
+            padding: 16px 40px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .item-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .item-card:hover::before {
+            opacity: 1;
+        }
+
+        .item-type {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(107, 138, 255, 0.15);
+            border: 1px solid rgba(107, 138, 255, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #8BA4FF;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-name {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .item-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFD700;
+        }
+
+        .buy-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 12px;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+        }
+
+        .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .modal-body {
+            margin-bottom: 30px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a1a;
+        }
+
+        .modal-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Notifications Panel */
+        .notifications-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: #1a1a1a;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .notifications-panel.show {
+            right: 0;
+        }
+
+        .notifications-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notifications-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close-notifications {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-item {
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .notification-type {
+            font-size: 12px;
+            color: #FFD700;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .notification-code {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFD700;
+            margin-top: 12px;
+            letter-spacing: 2px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 8px;
+        }
+
+        /* Connected Account */
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+        }
+
+        .account-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B8AFF, #8BA4FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .account-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .account-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 12px;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            min-width: 200px;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .account-menu.show {
+            display: block;
+        }
+
+        .account-menu-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .account-menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .account-menu-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .account-menu-item:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Auth Modal */
+        .auth-modal-content {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 480px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .auth-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .auth-hint {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .auth-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn-primary {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a1a1a;
+        }
+
+        .auth-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
+        }
+
+        .auth-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .notifications-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🏪</span>
+            Sheristore
+        </div>
+        <div class="header-right" id="headerRight">
+            <button class="connect-btn" id="connectBtn" onclick="showAuthModal()">
+                Войти
+            </button>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Эксклюзивные имена<br>и адреса</h1>
+            <p>Приобретайте уникальные юзернеймы и email-адреса за Shericoin</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('usernames')">Юзернеймы</button>
+            <button class="tab" onclick="switchTab('emails')">Email адреса</button>
+        </div>
+
+        <!-- Items Grid -->
+        <div class="items-grid" id="itemsGrid">
+            <!-- Items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">@premium</div>
+                <div class="modal-subtitle">Подтвердите покупку</div>
+            </div>
+            <div class="modal-body">
+                <div class="info-row">
+                    <span class="info-label">Тип</span>
+                    <span class="info-value" id="modalType">Username</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Цена</span>
+                    <span class="info-value" id="modalPrice">1000 🪙</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ваш баланс</span>
+                    <span class="info-value" id="modalBalance">0 🪙</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Отмена</button>
+                <button class="modal-btn modal-btn-primary" onclick="confirmPurchase()">Купить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="auth-modal-content">
+            <div class="auth-title">Вход в Sheristore</div>
+            <div class="auth-subtitle">Используйте данные от Sherigram</div>
+            
+            <div id="authError" style="display: none; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); padding: 12px 16px; border-radius: 10px; color: #ff6b6b; font-size: 14px; margin-bottom: 20px; line-height: 1.5; white-space: pre-line;"></div>
+            
+            <input 
+                type="text" 
+                class="auth-input" 
+                id="authInput" 
+                placeholder="Например: @user123 или email@example.com"
+                onkeypress="if(event.key === 'Enter') loginWithUsername()"
+            >
+            
+            <div class="auth-hint">
+                <strong>Важно:</strong> Сначала зарегистрируйтесь в мессенджере Sherigram!<br><br>
+                Затем используйте здесь тот же <strong>@username</strong> или <strong>email</strong>, что и в Sherigram.<br>
+                Это даст доступ к вашему балансу Shericoin 🪙
+            </div>
+            
+            <div class="auth-buttons">
+                <button class="auth-btn auth-btn-secondary" onclick="closeAuthModal()">Отмена</button>
+                <button class="auth-btn auth-btn-primary" onclick="loginWithUsername()">Войти</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notifications-panel" id="notificationsPanel">
+        <div class="notifications-header">
+            <div class="notifications-title">Уведомления</div>
+            <button class="close-notifications" onclick="closeNotifications()">✕</button>
+        </div>
+        <div id="notificationsList">
+            <!-- Notifications will be loaded here -->
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration (та же база что у Sherigram!)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBexyhVHy6ga84cCtaylLPPLlOce_n4oYs",
+            authDomain: "sherigram-fb76d.firebaseapp.com",
+            databaseURL: "https://sherigram-fb76d-default-rtdb.firebaseio.com",
+            projectId: "sherigram-fb76d",
+            storageBucket: "sherigram-fb76d.firebasestorage.app",
+            messagingSenderId: "667810232236",
+            appId: "1:667810232236:web:51faf64a2e21a7b23e6ab9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Current User and State
+        let currentUser = null;
+        let currentTab = 'usernames';
+        let selectedItem = null;
+        let notifications = [];
+        let purchasedItems = {
+            usernames: [],
+            emails: []
+        };
+
+        // Load items from Firebase
+        async function loadItemsFromFirebase() {
+            try {
+                const usernamesSnap = await db.ref('store/usernames').once('value');
+                const emailsSnap = await db.ref('store/emails').once('value');
+                
+                const usernames = usernamesSnap.val() || {};
+                const emails = emailsSnap.val() || {};
+                
+                return {
+                    usernames: Object.entries(usernames).map(([id, item]) => ({ id, ...item })),
+                    emails: Object.entries(emails).map(([id, item]) => ({ id, ...item }))
+                };
+            } catch (error) {
+                console.error('Error loading items:', error);
+                // Fallback to default items if Firebase fails
+                return getDefaultItems();
+            }
+        }
+
+        function getDefaultItems() {
+            return {
+                usernames: [
+                    { id: 'u1', name: '@premium', description: 'Эксклюзивный короткий юзернейм', price: 1000, available: true },
+                    { id: 'u2', name: '@vip', description: 'Статусное имя для VIP пользователей', price: 1500, available: true },
+                    { id: 'u3', name: '@elite', description: 'Для настоящей элиты', price: 2000, available: true },
+                    { id: 'u4', name: '@boss', description: 'Показывает кто здесь главный', price: 800, available: true },
+                    { id: 'u5', name: '@king', description: 'Королевский статус', price: 2500, available: true },
+                    { id: 'u6', name: '@gold', description: 'Золотое имя', price: 3000, available: true },
+                    { id: 'u7', name: '@legend', description: 'Легендарный статус', price: 5000, available: true },
+                    { id: 'u8', name: '@pro', description: 'Для профессионалов', price: 800, available: true },
+                ],
+                emails: [
+                    { id: 'e1', name: 'premium@sheri.mail', description: 'Престижный email адрес', price: 500, available: true },
+                    { id: 'e2', name: 'vip@sheri.mail', description: 'VIP email для важных персон', price: 750, available: true },
+                    { id: 'e3', name: 'boss@sheri.mail', description: 'Email для руководителей', price: 600, available: true },
+                    { id: 'e4', name: 'gold@sheri.mail', description: 'Золотой email адрес', price: 1000, available: true },
+                ]
+            };
+        }
+
+        let items = getDefaultItems();
+
+        // Initialize default items in Firebase if they don't exist
+        async function initializeStoreItems() {
+            try {
+                const storeSnap = await db.ref('store').once('value');
+                if (!storeSnap.exists()) {
+                    const defaultItems = getDefaultItems();
+                    
+                    // Convert arrays to objects for Firebase
+                    const usernamesObj = {};
+                    defaultItems.usernames.forEach(item => {
+                        usernamesObj[item.id] = {
+                            name: item.name,
+                            description: item.description,
+                            price: item.price,
+                            available: item.available
+                        };
+                    });
+                    
+                    const emailsObj = {};
+                    defaultItems.emails.forEach(item => {
+                        emailsObj[item.id] = {
+                            name: item.name,
+                            description: item.description,
+                            price: item.price,
+                            available: item.available
+                        };
+                    });
+                    
+                    await db.ref('store/usernames').set(usernamesObj);
+                    await db.ref('store/emails').set(emailsObj);
+                    console.log('Store initialized with default items');
+                }
+            } catch (error) {
+                console.error('Error initializing store:', error);
+            }
+        }
+
+        async function loadItems() {
+            const grid = document.getElementById('itemsGrid');
+            grid.innerHTML = '<div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.5);">Загрузка...</div>';
+            
+            items = await loadItemsFromFirebase();
+            const currentItems = items[currentTab];
+
+            if (currentItems.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-text">Товары появятся скоро</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = currentItems.map(item => `
+                <div class="item-card" onclick="openPurchaseModal('${item.id}')">
+                    <div class="item-type">${currentTab === 'usernames' ? 'Username' : 'Email'}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">
+                            <span>🪙</span>
+                            <span>${item.price.toLocaleString()}</span>
+                        </div>
+                        <button class="buy-btn" ${!item.available ? 'disabled' : ''}>
+                            ${item.available ? 'Купить' : 'Продано'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            loadItems();
+        }
+
+        // AUTH SYSTEM
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('show');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('show');
+        }
+
+        async function loginWithUsername() {
+            const input = document.getElementById('authInput').value.trim();
+            if (!input) {
+                showError('Введите username или email!');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                let userSnap;
+                let searchType = '';
+                
+                // Check if it's username (starts with @) or email
+                if (input.startsWith('@')) {
+                    searchType = 'username';
+                    console.log('Searching by username:', input);
+                    userSnap = await db.ref('users').orderByChild('username').equalTo(input).once('value');
+                } else if (input.includes('@')) {
+                    searchType = 'email';
+                    console.log('Searching by email:', input);
+                    userSnap = await db.ref('users').orderByChild('email').equalTo(input).once('value');
+                } else {
+                    showLoading(false);
+                    showError('Введите правильный username (например @user123) или email!');
+                    return;
+                }
+
+                if (!userSnap.exists()) {
+                    showLoading(false);
+                    showError(`Аккаунт с таким ${searchType === 'username' ? 'username' : 'email'} не найден!\n\nСначала зарегистрируйтесь в мессенджере Sherigram, затем используйте те же данные здесь.`);
+                    return;
+                }
+
+                const userData = userSnap.val();
+                const uid = Object.keys(userData)[0];
+                const user = userData[uid];
+
+                console.log('User found:', user);
+
+                // Get Shericoin balance
+                const balanceSnap = await db.ref('users/' + uid + '/shericoin').once('value');
+                const balance = balanceSnap.val() || 0;
+
+                console.log('Balance:', balance);
+
+                // Get purchased items
+                const purchasedSnap = await db.ref('users/' + uid + '/purchased').once('value');
+                const purchased = purchasedSnap.val() || { usernames: [], emails: [] };
+
+                currentUser = {
+                    uid: uid,
+                    displayName: user.displayName,
+                    username: user.username,
+                    email: user.email,
+                    balance: balance
+                };
+
+                purchasedItems = purchased;
+
+                // Save to localStorage for auto-login
+                localStorage.setItem('sheristore_user', JSON.stringify(currentUser));
+
+                showLoading(false);
+                closeAuthModal();
+                updateHeader();
+                loadNotifications();
+                
+                console.log('Login successful:', currentUser);
+                showSuccess(`Добро пожаловать, ${currentUser.displayName}!`);
+            } catch (error) {
+                showLoading(false);
+                console.error('Login error:', error);
+                showError('Ошибка при входе: ' + error.message);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('authError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4CAF50, #45a049);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+            `;
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+
+        function showLoading(show) {
+            const btn = document.querySelector('.auth-btn-primary');
+            if (show) {
+                btn.disabled = true;
+                btn.textContent = 'Загрузка...';
+            } else {
+                btn.disabled = false;
+                btn.textContent = 'Войти';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            purchasedItems = { usernames: [], emails: [] };
+            localStorage.removeItem('sheristore_user');
+            updateHeader();
+            alert('Вы вышли из аккаунта');
+        }
+
+        // Auto-login on page load
+        async function autoLogin() {
+            const saved = localStorage.getItem('sheristore_user');
+            if (!saved) return;
+
+            try {
+                const user = JSON.parse(saved);
+                
+                // Verify user still exists and get fresh data
+                const userSnap = await db.ref('users/' + user.uid).once('value');
+                if (!userSnap.exists()) {
+                    localStorage.removeItem('sheristore_user');
+                    return;
+                }
+
+                const userData = userSnap.val();
+                const balanceSnap = await db.ref('users/' + user.uid + '/shericoin').once('value');
+                const balance = balanceSnap.val() || 0;
+
+                const purchasedSnap = await db.ref('users/' + user.uid + '/purchased').once('value');
+                const purchased = purchasedSnap.val() || { usernames: [], emails: [] };
+
+                currentUser = {
+                    uid: user.uid,
+                    displayName: userData.displayName,
+                    username: userData.username,
+                    email: userData.email,
+                    balance: balance
+                };
+
+                purchasedItems = purchased;
+                updateHeader();
+                loadNotifications();
+            } catch (error) {
+                console.error('Auto-login error:', error);
+                localStorage.removeItem('sheristore_user');
+            }
+        }
+
+        function updateHeader() {
+            const headerRight = document.getElementById('headerRight');
+            
+            if (currentUser) {
+                headerRight.innerHTML = `
+                    <button class="notifications-btn" onclick="toggleNotifications()">
+                        🔔
+                        ${notifications.length > 0 ? `<span class="notification-badge">${notifications.length}</span>` : ''}
+                    </button>
+                    <div class="balance-display">
+                        <span class="coin-icon">🪙</span>
+                        <span>${currentUser.balance.toLocaleString()}</span>
+                    </div>
+                    <div class="account-info" onclick="toggleAccountMenu(event)">
+                        <div class="account-avatar">${currentUser.displayName[0]}</div>
+                        <div class="account-name">${currentUser.displayName}</div>
+                    </div>
+                    <div class="account-menu" id="accountMenu">
+                        <div class="account-menu-item" onclick="logout()">
+                            <span>🚪</span> Выйти
+                        </div>
+                    </div>
+                `;
+            } else {
+                headerRight.innerHTML = `
+                    <button class="connect-btn" onclick="showAuthModal()">
+                        Войти
+                    </button>
+                `;
+            }
+        }
+
+        function openPurchaseModal(itemId) {
+            const item = [...items.usernames, ...items.emails].find(i => i.id === itemId);
+            if (!item || !item.available) return;
+            
+            if (!currentUser) {
+                alert('Сначала войдите в аккаунт!');
+                showAuthModal();
+                return;
+            }
+
+            selectedItem = item;
+            
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalType').textContent = currentTab === 'usernames' ? 'Username' : 'Email';
+            document.getElementById('modalPrice').textContent = `${item.price.toLocaleString()} 🪙`;
+            document.getElementById('modalBalance').textContent = `${currentUser.balance.toLocaleString()} 🪙`;
+            
+            document.getElementById('purchaseModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('purchaseModal').classList.remove('show');
+            selectedItem = null;
+        }
+
+        async function confirmPurchase() {
+            if (!selectedItem || !currentUser) return;
+
+            if (currentUser.balance < selectedItem.price) {
+                alert('Недостаточно Shericoin! Зарабатывайте монеты в мессенджере Sherigram.');
+                return;
+            }
+
+            try {
+                // Deduct balance
+                const newBalance = currentUser.balance - selectedItem.price;
+                await db.ref('users/' + currentUser.uid + '/shericoin').set(newBalance);
+                currentUser.balance = newBalance;
+                
+                // Mark as sold in store
+                await db.ref('store/' + currentTab + '/' + selectedItem.id + '/available').set(false);
+                selectedItem.available = false;
+
+                // Add to user's purchased items
+                const purchaseData = {
+                    id: selectedItem.id,
+                    name: selectedItem.name,
+                    type: currentTab === 'usernames' ? 'username' : 'email',
+                    price: selectedItem.price,
+                    date: Date.now()
+                };
+
+                if (currentTab === 'usernames') {
+                    await db.ref('users/' + currentUser.uid + '/purchased/usernames').push(purchaseData);
+                } else {
+                    // For emails, generate verification code
+                    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+                    purchaseData.verificationCode = code;
+                    await db.ref('users/' + currentUser.uid + '/purchased/emails').push(purchaseData);
+                    
+                    // Add notification with code
+                    await addNotification({
+                        type: 'EMAIL_VERIFICATION',
+                        text: `Ваш новый email ${selectedItem.name} готов! Используйте код ниже для верификации в настройках Sherigram:`,
+                        code: code,
+                        time: new Date().toLocaleString('ru')
+                    });
+                }
+
+                if (currentTab === 'usernames') {
+                    await addNotification({
+                        type: 'USERNAME_PURCHASED',
+                        text: `Поздравляем! Вы успешно приобрели ${selectedItem.name}. Он уже доступен в вашем профиле Sherigram.`,
+                        time: new Date().toLocaleString('ru')
+                    });
+                }
+
+                alert(`Успешно куплено ${selectedItem.name}! Проверьте уведомления.`);
+                
+                closeModal();
+                updateHeader();
+                loadItems();
+            } catch (error) {
+                console.error('Purchase error:', error);
+                alert('Ошибка при покупке: ' + error.message);
+            }
+        }
+
+        async function addNotification(notification) {
+            try {
+                // Add to Firebase
+                await db.ref('users/' + currentUser.uid + '/notifications').push(notification);
+                
+                // Add to local array
+                notifications.unshift(notification);
+                loadNotifications();
+                updateHeader();
+            } catch (error) {
+                console.error('Error adding notification:', error);
+            }
+        }
+
+        async function loadNotifications() {
+            if (!currentUser) return;
+
+            try {
+                const notifSnap = await db.ref('users/' + currentUser.uid + '/notifications').once('value');
+                const notifs = notifSnap.val() || {};
+                
+                notifications = Object.values(notifs).reverse();
+                
+                const list = document.getElementById('notificationsList');
+                
+                if (notifications.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🔔</div>
+                            <div class="empty-text">Нет уведомлений</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = notifications.map(notif => `
+                    <div class="notification-item">
+                        <div class="notification-type">${notif.type === 'EMAIL_VERIFICATION' ? 'Верификация Email' : 'Покупка завершена'}</div>
+                        <div class="notification-text">${notif.text}</div>
+                        ${notif.code ? `<div class="notification-code">${notif.code}</div>` : ''}
+                        <div class="notification-time">${notif.time}</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        function toggleNotifications() {
+            const panel = document.getElementById('notificationsPanel');
+            panel.classList.toggle('show');
+        }
+
+        function closeNotifications() {
+            document.getElementById('notificationsPanel').classList.remove('show');
+        }
+
+        function toggleAccountMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('accountMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Close account menu when clicking outside
+        document.addEventListener('click', () => {
+            const menu = document.getElementById('accountMenu');
+            if (menu) menu.classList.remove('show');
+        });
+
+        // Initialize on page load
+        window.onload = async function() {
+            await initializeStoreItems();
+            await autoLogin();
+            await loadItems();
+        };
+    </script>
+</body>
+</html>
